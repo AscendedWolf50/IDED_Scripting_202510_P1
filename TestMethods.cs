@@ -4,106 +4,93 @@ namespace TestProject1
 {
     internal class TestMethods
     {
-        //   Función auxiliar para verificar si un número es primo
-        private static bool IsPrime(uint num)
+        private static bool IsPrime(uint numero)
         {
-            if (num < 2) return false;
-            for (uint i = 2; i * i <= num; i++)
+            if (numero < 2) return false;
+            for (uint i = 2; i * i <= numero; i++)
             {
-                if (num % i == 0) return false;
+                if (numero % i == 0) return false;
             }
             return true;
         }
 
-        //  Punto 1.  Inciso a.  Encontrar el primer número primo en la pila
-        internal static uint StackFirstPrime(Stack<uint> stack)
+        internal static uint StackFirstPrime(Stack<uint> pila)
         {
-            foreach (uint num in stack)
+            foreach (uint numero in pila)
             {
-                if (IsPrime(num))
-                    return num; // Retorna el primer primo encontrado
+                if (IsPrime(numero)) return numero;
             }
-            return 0; // No hay primos en la pila
+            return 0; // Si no hay primos
         }
 
-        //  Punto 1. Inciso b.  Eliminar el primer número primo encontrado en la pila
-        internal static Stack<uint> RemoveFirstPrime(Stack<uint> stack)
+        internal static Stack<uint> RemoveFirstPrime(Stack<uint> pila)
         {
-            Stack<uint> aux = new Stack<uint>();
-            bool removed = false;
+            Stack<uint> pilaTemporal = new Stack<uint>();
+            bool primoEliminado = false;
 
-            while (stack.Count > 0)
+            while (pila.Count > 0)
             {
-                uint num = stack.Pop();
-                if (!removed && IsPrime(num))
+                uint numero = pila.Pop();
+                if (!primoEliminado && IsPrime(numero))
                 {
-                    removed = true; // Marcamos que lo eliminamos y continuamos sin agregarlo
+                    primoEliminado = true;
                     continue;
                 }
-                aux.Push(num);
+                pilaTemporal.Push(numero);
             }
 
-            // Reconstruimos la pila original con el orden correcto
-            Stack<uint> newStack = new Stack<uint>();
-            while (aux.Count > 0)
+            // Restauramos el orden original
+            Stack<uint> nuevaPila = new Stack<uint>();
+            while (pilaTemporal.Count > 0)
             {
-                newStack.Push(aux.Pop());
+                nuevaPila.Push(pilaTemporal.Pop());
             }
 
-            return newStack;
+            return nuevaPila;
         }
 
-        //  Punto 1. Inciso c. crear una cola a partir de los elementos de la pila respetando el orden dela pila
-        internal static Queue<uint> CreateQueueFromStack(Stack<uint> stack)
+        internal static Queue<uint> CreateQueueFromStack(Stack<uint> pila)
         {
-            Queue<uint> queue = new Queue<uint>();
-            List<uint> list = new List<uint>(stack); // Copia los elementos sin alterar el orden
+            Queue<uint> cola = new Queue<uint>();
+            List<uint> listaElementos = new List<uint>(pila);
 
-            foreach (var item in list) // La lista mantiene el orden original
+            foreach (var elemento in listaElementos)
             {
-                queue.Enqueue(item);
+                cola.Enqueue(elemento);
             }
 
-            return queue;
+            return cola;
         }
 
-        //  Punto 1. Inciso d. Convierte la pila en una lista, respetando el orden de la pila
-        internal static List<uint> StackToList(Stack<uint> stack)
+        internal static List<uint> StackToList(Stack<uint> pila)
         {
-            List<uint> list = new List<uint>();
-            Stack<uint> aux = new Stack<uint>(stack); // Copia de la pila
+            List<uint> lista = new List<uint>();
+            Stack<uint> pilaTemporal = new Stack<uint>(pila);
 
-            while (aux.Count > 0)
+            while (pilaTemporal.Count > 0)
             {
-                list.Add(aux.Pop());
+                lista.Add(pilaTemporal.Pop());
             }
 
-            return list;
+            return lista;
         }
 
-        /* 
-         * Numeral 2. Se tiene una lista de tamaño arbitrario y par, llena con números enteros al azar; cada uno inferior a 100.
-         * Determinar si un número se encuentra entre los elementos de la lista, tras ordenarla ascendentemente
-         */
-        internal static bool FoundElementAfterSorted(List<int> list, int value)
+        internal static bool FoundElementAfterSorted(List<int> lista, int valor)
         {
-            // Ordenar la lista en orden ascendente
-            list.Sort();
+            lista.Sort(); // Ordenamos antes de buscar
 
-            // Búsqueda binaria para encontrar el valor
-            int left = 0, right = list.Count - 1;
-            while (left <= right)
+            int izquierda = 0, derecha = lista.Count - 1;
+            while (izquierda <= derecha)
             {
-                int mid = left + (right - left) / 2;
-                if (list[mid] == value)
-                    return true;
-                if (list[mid] < value)
-                    left = mid + 1;
+                int medio = izquierda + (derecha - izquierda) / 2;
+                if (lista[medio] == valor) return true;
+                if (lista[medio] < valor)
+                    izquierda = medio + 1;
                 else
-                    right = mid - 1;
+                    derecha = medio - 1;
             }
 
-            return false; // No encontrado;
+            return false;
         }
     }
 }
