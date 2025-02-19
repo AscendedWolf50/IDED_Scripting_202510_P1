@@ -57,11 +57,11 @@ namespace TestProject1
         internal static Queue<uint> CreateQueueFromStack(Stack<uint> stack)
         {
             Queue<uint> queue = new Queue<uint>();
-            Stack<uint> aux = new Stack<uint>(stack); // Copia de la pila
+            List<uint> list = new List<uint>(stack); // Copia los elementos sin alterar el orden
 
-            while (aux.Count > 0)
+            foreach (var item in list) // La lista mantiene el orden original
             {
-                queue.Enqueue(aux.Pop());
+                queue.Enqueue(item);
             }
 
             return queue;
